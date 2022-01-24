@@ -23,3 +23,4 @@ cat <<EOF > install_apache.yml
       state: latest
 EOF
 ```
+![003](https://user-images.githubusercontent.com/42735894/150816977-6842f8d8-08b0-4c4b-8476-fce73b2eb84b.PNG)
