@@ -9,10 +9,7 @@ apt update
 
 apt -y install ansible
 
-ssh-keygen -t ed25519 -C "ansible" 
+ssh-keygen -t ed25519 -C "choi default"
 
-ssh-copy-id -i ~/.ssh/ansible.pub <Node01_IP_Address>
-
-eval $(ssh-agent) && ssh-add
+ssh-copy-id -i ~/.ssh/id_ed25519.pub <Node01_IP_Address>
 ```
-

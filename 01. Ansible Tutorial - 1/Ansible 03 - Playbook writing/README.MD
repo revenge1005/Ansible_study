@@ -1,0 +1,25 @@
+## 3. Playbook writing
+
+```
+cat <<EOF > install_apache.yml
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update repository index
+    apt:
+      update_cache: yes
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: latest
+
+  - name: add php support for apache
+    apt:
+      name: libapache2-mod-php
+      state: latest
+EOF
+```
