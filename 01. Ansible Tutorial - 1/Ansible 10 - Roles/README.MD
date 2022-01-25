@@ -1,4 +1,4 @@
-## 9. Adding Users & Bootstrapping
+## 10. Roles
 
 ```
 cat <<EOF > site6.yml
