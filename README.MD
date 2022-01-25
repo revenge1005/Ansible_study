@@ -12,7 +12,10 @@ sudo apt -y install ansible
 ```
 ssh-keygen -t ed25519 -C "choi default"
 
-ssh-copy-id -i ~/.ssh/id_ed25519.pub <Node_IP_Address>
+for i in 192.168.219.101 192.168.219.102 192.168.219.103 192.168.219.104;
+do
+    ssh-copy-id -i ~/.ssh/id_ed25519.pub $i
+done
 ```
 ```
 ssh-keygen -t ed25519 -C "ansible"
@@ -21,10 +24,15 @@ Enter file in which to save the key (/home/choi/.ssh/id_ed25519): /home/choi/.ss
 
 ...
 
-ssh-copy-id -i ~/.ssh/ansible.pub <Node_IP_Address>
+for i in 192.168.219.101 192.168.219.102 192.168.219.103 192.168.219.104;
+do
+    ssh-copy-id -i ~/.ssh/ansible.pub $i
+done
 ```
 #### (2) (CentOS) Nodes Seting
 ```
+su
+
 cat <<EOF > /etc/sudoers.d/011_choi-sudoer
 choi    ALL=(ALL)   ALL
 EOF
