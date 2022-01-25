@@ -1,4 +1,4 @@
-## 6. Targeting Specific Nodes
+## 7. Tags
 
 ```
 cat <<EOF > site2.yml
