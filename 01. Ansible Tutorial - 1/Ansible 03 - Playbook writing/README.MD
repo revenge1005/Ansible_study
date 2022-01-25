@@ -24,6 +24,8 @@ cat <<EOF > install_apache.yml
       name: libapache2-mod-php
       state: latest
 EOF
+
+ansible-playbook --ask-become-pass install_apache.yml
 ```
 ![003](https://user-images.githubusercontent.com/42735894/150816977-6842f8d8-08b0-4c4b-8476-fce73b2eb84b.PNG)
 
@@ -50,4 +52,6 @@ cat <<EOF > remove_apache.yml
       name: libapache2-mod-php
       state: absent
 EOF
+
+ansible-playbook --ask-become-pass remove_apache.yml
 ```

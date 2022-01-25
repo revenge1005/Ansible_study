@@ -47,4 +47,6 @@ cat <<EOF > install_apache2.yml
       state: latest
     when: ansible_distribution == "CentOS"
 EOF
+
+ansible-playbook --ask-become-pass install_apache2.yml
 ```
