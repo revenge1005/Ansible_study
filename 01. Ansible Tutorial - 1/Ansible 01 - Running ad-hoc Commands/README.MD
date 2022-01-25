@@ -5,29 +5,9 @@
 ```
 cat <<EOF > inventory
 192.168.219.101
-192.168.219.101
+192.168.219.102
 EOF
 ```
-
-```
-ansible all --key-file ~/.ssh/id_ed25519 -m ping
-
-192.168.219.102 | SUCCESS => {
-    "ansible_facts": {
-        "discovered_interpreter_python": "/usr/bin/python3"
-    },
-    "changed": false,
-    "ping": "pong"
-}
-192.168.219.101 | SUCCESS => {
-    "ansible_facts": {
-        "discovered_interpreter_python": "/usr/bin/python3"
-    },
-    "changed": false,
-    "ping": "pong"
-}
-```
-
 ```
 cat <<EOF > ansible.cfg
 [defaults]
