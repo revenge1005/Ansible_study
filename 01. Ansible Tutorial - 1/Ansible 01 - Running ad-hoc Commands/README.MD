@@ -32,7 +32,7 @@ ansible all --key-file ~/.ssh/id_ed25519 -m ping
 cat <<EOF > ansible.cfg
 [defaults]
 inventory = inventory
-private_key_file = ~/.ssh/id_ed25519
+private_key_file = ~/.ssh/ansible
 EOF
 ```
 
