@@ -1,7 +1,7 @@
 ## 3. Conditional 
 
 
-#### (1) OS information Check 
+#### (1) Node OS 정보 확인
 ```
 ansible all -m gather_facts --limit 192.168.219.101 | grep ansible_distribution
 
@@ -14,7 +14,7 @@ ansible all -m gather_facts --limit 192.168.219.101 | grep ansible_distribution
         "ansible_distribution_version": "20.04",
 ```
 
-#### (3) (centos)node add
+#### (3) (centos) Node 추가
 ```
 cat <<EOF >> inventory
 192.168.219.103
