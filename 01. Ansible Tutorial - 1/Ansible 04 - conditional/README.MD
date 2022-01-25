@@ -33,7 +33,7 @@ cat <<EOF > install_apache2.yml
   - name: update repository index
     apt:
       update_cache: yes
-    when: ansible_distribution == "Ubuntu" 
+    when: when: ansible_distribution == "CentOS" and ansible_distribution_version == "20.04"
 
   - name: install apache2 package
     apt:
@@ -50,3 +50,4 @@ EOF
 
 ansible-playbook --ask-become-pass install_apache2.yml
 ```
+![20dasdas](https://user-images.githubusercontent.com/42735894/150955107-8867118d-66fa-4813-8902-e8b597e9029c.PNG)
