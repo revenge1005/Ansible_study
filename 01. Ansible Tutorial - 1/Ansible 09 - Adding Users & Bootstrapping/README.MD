@@ -240,7 +240,12 @@ EOF
 ansible-playbook --ask-become-pass bootstrap.yml
 ```
 
-- changed_when : changed 상태값은 task 어떤 것을 변갱했는지 표시
+- https://watch-n-learn.tistory.com/86
+
+- changed_when: false 사용
+-> 이 키워드는 task에서 changed 결과를 보고하는 시점을 제어할 수 있다.
+-> 실제로 changed가 나와야 되는 task에 대해서도 changed_whan: false 지시문을 포함하면 changed 로 보고되지 않는다. (ok로 보고됨)
+-> true로 한다면 changed로 보고된다.
 
 ```
 cat <<EOF > site5.yml
