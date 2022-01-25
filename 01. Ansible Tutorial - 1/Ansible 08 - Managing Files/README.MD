@@ -1,5 +1,13 @@
 ## 8. Managing Files
 
+- https://docs.ansible.com/ansible/latest/collections/ansible/builtin/unarchive_module.html
+
+- https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+
+- https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+
+- 해당 서버에  아카이브 파일을 받고 지정된 경로 아카이브의 압축 풀기
+
 - CentOS httpd 설치 후, 서비스 Start/Enable
 
 - default html 파일, 웹 서버에 배포
@@ -41,6 +49,23 @@ cat <<EOF > site3.yml
       upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
+  
+- hosts: workstations
+  become: true
+  tasks:
+  
+  - name: install unzip
+    package:
+       name: unzip
+
+  - name: install terraform
+    unarchive:
+       src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+       dest: /usr/local/bin
+       remote_src: yes
+       mode: 0755
+       owner: root
+       group: root
 
 - hosts: web_servers
   become: true
@@ -135,5 +160,5 @@ cat <<EOF > site3.yml
       state: latest
 EOF
 
-ansible-playbook --ask-become-pass site2.yml
+ansible-playbook --ask-become-pass site3.yml
 ```
