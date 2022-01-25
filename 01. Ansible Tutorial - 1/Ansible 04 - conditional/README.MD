@@ -1,4 +1,4 @@
-## 3. Conditional
+## 3. Conditional 
 
 
 #### (1) OS information Check 
@@ -30,18 +30,35 @@ cat <<EOF > install_apache2.yml
   become: true
   tasks:
 
-  - name: update repository index
+  - name: update repository index (Ubuntu)
     apt:
       update_cache: yes
-    when: when: ansible_distribution == "CentOS" and ansible_distribution_version == "20.04"
+    when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "20.04"
 
-  - name: install apache2 package
+  - name: install apache2 package (Ubuntu)
     apt:
       name: apache2
       state: latest
     when: ansible_distribution in ["Ubuntu", "Debiain"]
+  
+  - name: install PHP package (Ubuntu)
+    apt:
+      name: libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Ubuntu"
 
-  - name: install httpd packge
+  - name: update repository index (CentOS)
+    dnf:
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: install httpd packge (CentOS)
+    dnf:
+      name: httpd
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+  - name: install PHP packge (CentOS)
     dnf:
       name: httpd
       state: latest
@@ -50,4 +67,4 @@ EOF
 
 ansible-playbook --ask-become-pass install_apache2.yml
 ```
-![20dasdas](https://user-images.githubusercontent.com/42735894/150955107-8867118d-66fa-4813-8902-e8b597e9029c.PNG)
+![dadasdwqeqw](https://user-images.githubusercontent.com/42735894/150982810-5ee53496-9f7c-4fee-9714-cda5c4f226bd.PNG)
