@@ -31,6 +31,7 @@ EOF
 
 ansible-playbook --ask-become-pass install_apache3.yml
 ```
+![dasdasdwqeqw](https://user-images.githubusercontent.com/42735894/150989357-18e65914-7e2f-4295-983b-2fc0b18bd1fe.PNG)
 
 #### (2)
 
@@ -61,3 +62,4 @@ EOF
 
 ansible-playbook --ask-become-pass install_apache4.yml
 ```
+![125848](https://user-images.githubusercontent.com/42735894/150989367-deae3b90-95b8-4e82-b068-bb364ce08af4.PNG)
