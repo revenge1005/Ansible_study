@@ -157,7 +157,6 @@ cat <<EOF > roles/web_servers/handlers/main.yml
   service:
     name: "{{ apache_service }}"
     state: restarted
-  when: httpd.changed
 EOF
 ```
 
