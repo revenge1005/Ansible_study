@@ -1,5 +1,7 @@
 ## 11. Host Variables and Handlers
 
+- https://gruuuuu.github.io/ansible/ansible-role/
+
 #### (1) Host Variable
 
 ```
@@ -194,3 +196,4 @@ tree
 └── site6.yml
 ```
 ![01212dad](https://user-images.githubusercontent.com/42735894/151129575-697eadaa-8e55-442c-9a1a-3e276f3cf248.PNG)
+
