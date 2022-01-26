@@ -128,3 +128,5 @@ tree
 ```
 ansible-playbook site6.yml
 ```
+
+![eqeqweq](https://user-images.githubusercontent.com/42735894/151137429-f8f4e442-2764-405f-a690-ed4598e249c0.PNG)
