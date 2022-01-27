@@ -3,11 +3,15 @@
 
 ## 2. 사전 구성
 
-#### (1) Workstation
+#### (1) Workstation - Ansible install
 ```
-sudo apt update 
+sudo apt update
 
-sudo apt -y install ansible
+sudo apt install software-properties-common
+
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+
+sudo apt install ansible
 ```
 ```
 ssh-keygen -t ed25519 -C "choi default"
