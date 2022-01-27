@@ -1,4 +1,4 @@
-## 2-01. inventory 규칙
+## 01. inventory 규칙
 
 ```bash
 
