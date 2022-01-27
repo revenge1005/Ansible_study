@@ -1,5 +1,7 @@
 ## 02. ad-hoc 명령
 
+- https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html#plugin-index
+
 - ansible의 ad-hoc 명령은 playbook을 작성하지 않고 command-line에서 직접 ansible 모듈을 호출해서 사용하는 방식
 
 - ad-hoc 명려어 사용법
