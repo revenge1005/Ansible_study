@@ -208,8 +208,11 @@ STAGING_SERVERS_DB
 PROD_SERVERS_DB
 ```
 
-#### (2-1) ansible-inventory --list 명령으로 확인
-```
+#### (2-1) ansible-inventory --list 명령으로 확인 
+
+- (1-1)과 같은 결과로 나오는 것을 확인할 수 있다.
+
+```bash
 $ ansible-inventory --list
 {
     "ALL_SERVERS_DB": {
