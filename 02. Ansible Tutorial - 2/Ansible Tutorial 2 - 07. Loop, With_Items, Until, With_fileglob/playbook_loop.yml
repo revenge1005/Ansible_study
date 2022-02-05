@@ -1,0 +1,15 @@
+---
+- name: Loops Playbook
+  hosts: node03
+  become: yes
+
+  tasks:
+
+  - name: Say Hello to ALL
+    debug:
+      msg: "Hello {{ item }}"
+    loop:
+        - "Vasya"
+        - "Petya"
+        - "Masha"
+        - "Olya"

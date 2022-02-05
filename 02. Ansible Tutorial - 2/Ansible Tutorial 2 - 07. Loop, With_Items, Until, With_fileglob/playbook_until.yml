@@ -1,0 +1,16 @@
+---
+- name: Loops Playbook2
+  hosts: node03
+  become: yes
+
+  tasks:
+  - name: Loop Until example
+    shell: echo -n Z >> myfile.txt && cat myfile.txt
+    register: output
+    delay: 2    # 매 실행 시마다 delay
+    retries: 10 # 반복 횟수
+    until: output.stdout.find("ZZZZ") == false # exit 조건
+
+  - name: Print Final Output
+    debug:
+      var: output.stdout
