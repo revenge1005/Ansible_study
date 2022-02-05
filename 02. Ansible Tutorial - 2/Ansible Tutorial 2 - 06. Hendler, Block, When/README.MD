@@ -1,4 +1,4 @@
-## 6. Handler와 When
+## 6. Hendler, Block, When
 
 #### 1) When
 
