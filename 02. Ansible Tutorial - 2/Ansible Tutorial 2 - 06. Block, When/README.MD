@@ -4,7 +4,11 @@
 
 - 조건문, 조건이 참(True)일 경우 Task 실행, 거짓(False)일 경우 Task 미실행
 
-#### 2) Handler
+#### 2) Block
+
+- Task 그룹
+
+#### 3) Handler
 
 - 조건부 형식 중에 하나 (조건부 형식이란, if 앞의 테스크가 동작하거나 또는 조건에 맞는다면 handler를 실행한다)
 
@@ -76,7 +80,7 @@ $ cat playbook.yml
 
 ----
 
-#### 4) When 예제 
+#### 4) block, When 예제 
 
 ```bash
 $ tree
@@ -112,37 +116,52 @@ $ cat playbook.yml
 
   tasks:
 
-  - name: Install Aapache WEB Server for RedHat
-    yum:
-      name: httpd
-      state: latest
+  - name: Check and Print Linux Version
+    debug:
+      var: ansible_os_family
+
+  - block:   # ======Block for RedHat======
+
+      - name: Install Apache WEB Server for RedHat
+        yum:
+          name: httpd
+          state: latest
+
+      - name: Copy HomePage file to WEB Server
+        copy:
+          src: "{{ source_file  }}"
+          dest: "{{ destin_file  }}"
+          mode: 0555
+        notify: Restart Apache RedHat
+
+      - name: Start WEB Server service for RedHat
+        service:
+          name: httpd
+          state: started
+          enabled: yes
+
     when: ansible_os_family == "RedHat"
 
-  - name: Install Aapache WEB Server for Debian
-    apt:
-      name: apache2
-      state: latest
-    when: ansible_os_family == "Debian"
+  - block:   # ======Block for Debian======
 
-  - name: Copy HomePage file to WEB Server
-    copy:
-      src: "{{ source_file  }}"
-      dest: "{{ destin_file  }}"
-      mode: 0555
-#   notify: Restart Apache
+      - name: Install Apache WEB Server for Debian
+        apt:
+          name: apache2
+          state: latest
 
-  - name: Start WEB Server service for RedHat
-    service:
-      name: httpd
-      state: started
-      enabled: yes
-    when: ansible_os_family == "RedHat"
+      - name: Copy HomePage file to WEB Server
+        copy:
+          src: "{{ source_file  }}"
+          dest: "{{ destin_file  }}"
+          mode: 0555
+        notify: Restart Apache Debian
 
-  - name: Start WEB Server service for Debian
-    service:
-      name: apache2
-      state: started
-      enabled: yes
+      - name: Start WEB Server service for Debian
+        service:
+          name: apache2
+          state: started
+          enabled: yes
+
     when: ansible_os_family == "Debian"
 
   handlers:
@@ -157,4 +176,4 @@ $ cat playbook.yml
       state: restarted
 ```
 
-![dawqeqw](https://user-images.githubusercontent.com/42735894/152642068-256d7f8e-2530-4c80-8054-6d4c394773f5.PNG)
+![1231312321321312321](https://user-images.githubusercontent.com/42735894/152642784-5c95b610-1fbb-4ef3-998e-92a01c7e1c72.PNG)
