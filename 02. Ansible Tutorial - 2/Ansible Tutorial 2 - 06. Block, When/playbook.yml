@@ -1,0 +1,34 @@
+---
+- name: Install Apache and Upload my Home Page
+  hosts: all
+  become: yes
+
+  vars:
+    source_file: ./files/index.html
+    destin_file: /var/www/html/
+
+  tasks:
+
+  - name: Install Apache WEB Server
+    yum:
+      name: httpd
+      state: latest
+
+  - name: Copy HomePage file to WEB Server
+    copy:
+      src: "{{ source_file  }}"
+      dest: "{{ destin_file  }}"
+      mode: 0555
+    notify: Restart Apache
+
+  - name: Start WEB Server service
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+  handlers:
+  - name: Restart Apache
+    service:
+      name: httpd
+      state: restarted

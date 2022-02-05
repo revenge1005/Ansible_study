@@ -1,0 +1,75 @@
+## 6. Handler와 When
+
+#### 1) When
+
+- 조건문, 조건이 참(True)일 경우 Task 실행, 거짓(False)일 경우 Task 미실행
+
+#### 2) Handler
+
+- 조건부 형식 중에 하나 (조건부 형식이란, if 앞의 테스크가 동작하거나 또는 조건에 맞는다면 handler를 실행한다)
+
+- Task에서 notify를 이용하여 handler의 name을 매개변수로 전달하여 알린다.
+
+- 모든 태스크가 모두 실행된 후에 Handler가 실행된다.
+
+- 여러 차레 알람을 받아도 핸들러는 한 번만 실행된다.
+
+- 플레이에 여러 핸들러를 포함하면, 해당 핸들러는 알림 순서가 아니라, handler 섹션에 정의된 순서대로 항상 실행된다.
+
+<br>
+
+----
+
+#### 3) Handler 예제 - web server install 
+
+```bash
+$ tree
+.
+├── ansible.cfg
+├── files
+│   └── index.html
+├── group_vars
+│   └── ALL_LINUX
+├── inventory
+└── playbook.yml
+
+2 directories, 5 files
+```
+
+```bash
+$ cat playbook.yml
+---
+- name: Install Apache and Upload my Home Page
+  hosts: all
+  become: yes
+
+  vars:
+    source_file: ./files/index.html
+    destin_file: /var/www/html/
+
+  tasks:
+
+  - name: Install Apache WEB Server
+    yum:
+      name: httpd
+      state: latest
+
+  - name: Copy HomePage file to WEB Server
+    copy:
+      src: "{{ source_file  }}"
+      dest: "{{ destin_file  }}"
+      mode: 0555
+    notify: Restart Apache
+
+  - name: Start WEB Server service
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+  handlers:
+  - name: Restart Apache
+    service:
+      name: httpd
+      state: restarted
+```
