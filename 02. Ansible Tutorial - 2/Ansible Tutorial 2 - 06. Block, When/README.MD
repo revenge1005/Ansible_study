@@ -16,8 +16,6 @@
 
 - 플레이에 여러 핸들러를 포함하면, 해당 핸들러는 알림 순서가 아니라, handler 섹션에 정의된 순서대로 항상 실행된다.
 
-<br>
-
 ----
 
 #### 3) Handler 예제 - web server install 
@@ -73,3 +71,5 @@ $ cat playbook.yml
       name: httpd
       state: restarted
 ```
+
+![1321321](https://user-images.githubusercontent.com/42735894/152640925-c446e60a-0792-489f-8c64-6701bd2a5624.PNG)
