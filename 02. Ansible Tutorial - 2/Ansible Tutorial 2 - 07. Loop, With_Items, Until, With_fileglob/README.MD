@@ -330,3 +330,5 @@ $ cat playbook2.yml
       state: restarted
     when: ansible_os_family == "Debian"
 ```
+
+![dasdsadd](https://user-images.githubusercontent.com/42735894/152648709-d93c70c5-2cea-45e0-9e43-387bebda235c.PNG)
