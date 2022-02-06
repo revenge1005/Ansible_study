@@ -80,6 +80,8 @@ Welcome to localhost.
 Today's date is : 2022-02-07
 ```
 
+<br>
+
 #### 5) 간단 예시 - 2, 템플릿 파일에 관리자용 주석 달기
 
 - 관리자가 template으로 만든 결과파일에 대해 수정하지 않도록 요구하거나 특별한 주석을 달고 싶을때, 여러 방법이 있지만 **가장 간단한 방법은 ansible.cfg의 [defaults] 섹션에 "ansible_managed=" 라는 부분을 추가하는 것**이다
@@ -107,6 +109,8 @@ Welcome to node01.
 Today's date is : 2022-02-07
 ```
 
+<br>
+
 #### 6) jinja2 제어구조 - 반복문
 
 - << 사용법 >>
@@ -116,8 +120,6 @@ Today's date is : 2022-02-07
     {{ user }}
 {% endfor %}
 ```
-
-<br>
 
 - << 예시 1 >> : 직접 jinja2 템플릿에 변수를 정의하여 사용
 ```bash
@@ -139,8 +141,6 @@ cat <<EOF > jinja2-template1.yml
       mode: 0644
 EOF
 ```
-
-<br>
 
 - << 예시 2 >> : 플레이북에서 직접 정의한 변수 사용
 
@@ -181,8 +181,6 @@ The number is 9
 The number is 10
 ```
 
-<br>
-
 - << 예시 3 >> : 매직변수 & 팩트 변수 사용
 
 **이렇게 여러개의 ansible host를 대상으로 팩트변수를 얻는 구문을 쓸 때는 ansible-playbook에도 해당 호스트를 동일하게 명시해야 한다.**
@@ -221,6 +219,8 @@ HOST localhost IPADDR : 192.168.219.103
 HOST localhost IPADDR : 192.168.219.104
 4
 ```
+
+<br>
 
 #### 7) jinja2 제어구조 - 조건문
 
