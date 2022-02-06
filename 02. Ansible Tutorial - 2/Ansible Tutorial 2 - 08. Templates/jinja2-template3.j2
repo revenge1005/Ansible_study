@@ -1,0 +1,4 @@
+{% for host in groups['all'] %}
+HOST {{ hostvars[host]['ansible_facts']['hostname'] }} IPADDR : {{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }}
+{{ loop.index }}
+{% endfor %}

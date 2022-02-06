@@ -1,0 +1,5 @@
+[ALL_LINUX]
+node01 ansible_host=192.168.219.101 owner=choi
+node02 ansible_host=192.168.219.102 owner=choi
+node03 ansible_host=192.168.219.103 owner=choi
+node04 ansible_host=192.168.219.104 owner=choi

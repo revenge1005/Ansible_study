@@ -1,4 +1,4 @@
-## 6. Loop, With_Items, Until, With_fileglob
+## 7. Loop, With_Items, Until, With_fileglob
 
 #### 1) 반복문
 
