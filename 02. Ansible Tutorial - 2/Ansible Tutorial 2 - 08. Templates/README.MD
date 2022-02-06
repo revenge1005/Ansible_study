@@ -232,8 +232,6 @@ HOST localhost IPADDR : 192.168.219.104
 {% endif %}
 ```
 
-<br>
-
 - << 예시 1 >> 
 
 **finished 변수의 값이 true 일 때만 result 변수의 값을 찍어낸다.**
@@ -242,8 +240,6 @@ HOST localhost IPADDR : 192.168.219.104
 {{ result }}
 {% endif %}
 ```
-
-<br>
 
 - << 예시 2 >> 
 ```bash
