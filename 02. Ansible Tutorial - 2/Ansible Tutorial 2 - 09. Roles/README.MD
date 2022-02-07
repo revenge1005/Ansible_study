@@ -76,8 +76,6 @@
 
 #### 5) role 예시
 
-- roles 자동 구성 : "ansible-galaxy init [Directory_name]"
-
 ```bash
 $ ansible-galaxy init roles
 - Role roles was created successfully
