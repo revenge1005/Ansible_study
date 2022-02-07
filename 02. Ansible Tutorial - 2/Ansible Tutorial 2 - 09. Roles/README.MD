@@ -38,3 +38,29 @@
 - role에서 cp, script, template 또는 import_task, include_task 등은 절대경로/상대경로, 이름이 없는 관련 파일, 템플릿 또는 작업 파일을 참조할 수 있다.
 
 - ansible은 files, templates, tasks 하위 디렉토리에서 이러한 각각의 항목들을 찾는다.
+
+#### 3) role이 포함된 playbook에서 실행 순서 제어하기
+
+- role이 포함된 playbook에서 실행 순서를 제어하기 위해 2가지 지시자를 사용한다 ("pre_tasks", "post_tasks")
+
+- **pre_tasks에 나열된 작업은 모든 role, 일반 tasks가 실행되기 전에 제일 먼저 실행된다.**
+
+- **post_tasks는 이러한 작업은 pre_tasks, tasks, roles가 모두 실행된 후에 마지막에 실행된다.**
+
+#### 4) playbook에 role 포함하기
+
+- include_role   : role을 동적으로 포함 (ansible 2.3 version에서 추가된 기능)
+
+- import_role    : role을 동적으로 포함 (ansible 2.3 version에서 추가된 기능)
+
+```
+---
+- name: execute a role as a task
+  hosts: web.example.com
+  tasks:
+    - name: a normal task
+      debug:
+        msg: 'first task'
+    - name: a task to include role2 here
+      include_role: role2
+```
