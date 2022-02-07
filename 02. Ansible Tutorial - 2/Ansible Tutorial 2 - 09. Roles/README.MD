@@ -104,15 +104,18 @@ $ tree
         ├── handlers
         │   └── main.yml
         ├── meta
+        │   └── main.yml
         ├── tasks
         │   └── main.yml
         ├── templates
         │   └── index.j2
         ├── tests
+        │   ├── inventory
+        │   └── test.yml
         └── vars
             └── main.yml
 
-11 directories, 12 files
+11 directories, 15 files
 ```
 
 ```

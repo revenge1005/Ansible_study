@@ -1,3 +1,5 @@
+---
+# handlers file for roles
 - name: Restart Apache RedHat
   service:
     name: httpd
