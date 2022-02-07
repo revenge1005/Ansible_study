@@ -71,3 +71,130 @@
     - name: a task to include role2 here
       include_role: role2
 ```
+
+---
+
+#### 5) role 예시
+
+```bash
+$ tree
+.
+├── ansible.cfg
+├── inventory
+├── playbook.yml
+└── roles
+    └── web_servers
+        ├── defaults
+        │   └── main.yml
+        ├── files
+        │   └── MyWebSite
+        │       ├── 1.png
+        │       ├── 2.png
+        │       ├── 3.png
+        │       └── 4.png
+        ├── handlers
+        │   └── main.yml
+        ├── meta
+        ├── tasks
+        │   └── main.yml
+        ├── templates
+        │   └── index.j2
+        ├── tests
+        └── vars
+            └── main.yml
+
+11 directories, 12 files
+```
+
+```
+$ ansible-playbook --ask-become-pass playbook.yml
+BECOME password:
+
+PLAY [all] **********************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [node03]
+ok: [node04]
+ok: [node01]
+ok: [node02]
+
+TASK [web_servers : Check and Print Linux Version] ******************************************************************************************************************************************************
+ok: [node01] => {
+    "ansible_os_family": "Debian"
+}
+ok: [node02] => {
+    "ansible_os_family": "Debian"
+}
+ok: [node03] => {
+    "ansible_os_family": "RedHat"
+}
+ok: [node04] => {
+    "ansible_os_family": "RedHat"
+}
+
+TASK [web_servers : install Httpd package for Rocky Linux Server] ***************************************************************************************************************************************
+skipping: [node01]
+skipping: [node02]
+changed: [node03]
+changed: [node04]
+
+TASK [web_servers : Start WEB Server service for Debian] ************************************************************************************************************************************************
+skipping: [node01]
+skipping: [node02]
+changed: [node04]
+changed: [node03]
+
+TASK [web_servers : Install Apache WEB Server for Debian] ***********************************************************************************************************************************************
+skipping: [node03]
+skipping: [node04]
+changed: [node01]
+changed: [node02]
+
+TASK [web_servers : Start WEB Server service for Debian] ************************************************************************************************************************************************
+skipping: [node03]
+skipping: [node04]
+ok: [node02]
+ok: [node01]
+
+TASK [web_servers : Generate index.html file] ***********************************************************************************************************************************************************
+changed: [node02]
+changed: [node01]
+changed: [node03]
+changed: [node04]
+
+TASK [web_servers : Copy Homepage file to WEB Server] ***************************************************************************************************************************************************
+changed: [node02] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/2.png)
+changed: [node01] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/2.png)
+changed: [node03] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/2.png)
+changed: [node04] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/2.png)
+changed: [node02] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/3.png)
+changed: [node01] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/3.png)
+changed: [node03] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/3.png)
+changed: [node04] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/3.png)
+changed: [node02] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/1.png)
+changed: [node01] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/1.png)
+changed: [node02] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/4.png)
+changed: [node01] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/4.png)
+changed: [node03] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/1.png)
+changed: [node04] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/1.png)
+changed: [node03] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/4.png)
+changed: [node04] => (item=/home/choi/ansible/roles/web_servers/files/./MyWebSite/4.png)
+
+RUNNING HANDLER [web_servers : Restart Apache RedHat] ***************************************************************************************************************************************************
+skipping: [node02]
+skipping: [node01]
+changed: [node04]
+changed: [node03]
+
+RUNNING HANDLER [web_servers : Restart Apache Debian] ***************************************************************************************************************************************************
+skipping: [node03]
+skipping: [node04]
+changed: [node02]
+changed: [node01]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+node01                     : ok=7    changed=4    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0
+node02                     : ok=7    changed=4    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0
+node03                     : ok=7    changed=5    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0
+node04                     : ok=7    changed=5    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0
+```
