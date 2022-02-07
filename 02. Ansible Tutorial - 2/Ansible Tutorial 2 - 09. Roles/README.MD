@@ -10,6 +10,7 @@
 
     - https://watch-n-learn.tistory.com/92?category=841096
 
+---
 
 #### 1) ansible role의 구성요소
 
@@ -20,6 +21,8 @@
 ![dada](https://user-images.githubusercontent.com/42735894/152728225-0add9b6f-7727-43a0-befe-60c3b721af37.PNG)
 
 ![2dasd](https://user-images.githubusercontent.com/42735894/152733677-b99fcd64-7136-41c0-8545-412434334322.PNG)
+
+---
 
 #### 2) ansible role 사용법
 
@@ -39,6 +42,8 @@
 
 - ansible은 files, templates, tasks 하위 디렉토리에서 이러한 각각의 항목들을 찾는다.
 
+---
+
 #### 3) role이 포함된 playbook에서 실행 순서 제어하기
 
 - role이 포함된 playbook에서 실행 순서를 제어하기 위해 2가지 지시자를 사용한다 ("pre_tasks", "post_tasks")
@@ -46,6 +51,8 @@
 - **pre_tasks에 나열된 작업은 모든 role, 일반 tasks가 실행되기 전에 제일 먼저 실행된다.**
 
 - **post_tasks는 이러한 작업은 pre_tasks, tasks, roles가 모두 실행된 후에 마지막에 실행된다.**
+
+---
 
 #### 4) playbook에 role 포함하기
 
