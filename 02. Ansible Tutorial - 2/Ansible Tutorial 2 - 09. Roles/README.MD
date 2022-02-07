@@ -10,11 +10,11 @@
 
     - https://watch-n-learn.tistory.com/92?category=841096
 
-<br>
 
-### 1) ansible role의 구성요소
+#### 1) ansible role의 구성요소
 
 - Role은 하위 디렉토리 및 파일의 표준화된 구조에 의해 정의된다.
 
 - **최상위 디렉토리는 role 자체의 이름으로 정의**하며, 그 아래의 파일들은 tasks, handler 등 **role에서 각 파일의 목적에 따라 이름이 지정된 하위 디렉토리로 구성**된다.
 
+![dada](https://user-images.githubusercontent.com/42735894/152728225-0add9b6f-7727-43a0-befe-60c3b721af37.PNG)
