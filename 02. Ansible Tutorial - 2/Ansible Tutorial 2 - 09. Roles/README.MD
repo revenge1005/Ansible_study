@@ -20,3 +20,21 @@
 ![dada](https://user-images.githubusercontent.com/42735894/152728225-0add9b6f-7727-43a0-befe-60c3b721af37.PNG)
 
 ![2dasd](https://user-images.githubusercontent.com/42735894/152733677-b99fcd64-7136-41c0-8545-412434334322.PNG)
+
+#### 2) ansible role 사용법
+
+- 아래 예시대로 **"roles 지시자"**를 사용하면 된다.
+
+```bash
+---
+- host: all
+  roles:
+    - role01
+    - role02
+```
+
+- 이렇게 지정한 role01, role02의 디렉토리에서 tasks, heandlers, vars 등 모든 내용들을 불러와서 해당 role을 실행한다.
+
+- role에서 cp, script, template 또는 import_task, include_task 등은 절대경로/상대경로, 이름이 없는 관련 파일, 템플릿 또는 작업 파일을 참조할 수 있다.
+
+- ansible은 files, templates, tasks 하위 디렉토리에서 이러한 각각의 항목들을 찾는다.
