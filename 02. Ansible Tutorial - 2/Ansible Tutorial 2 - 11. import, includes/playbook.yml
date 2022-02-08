@@ -1,0 +1,32 @@
+---
+- name: configure web server
+  hosts: ROCKEY
+  become: yes
+  tasks:
+
+    # 패키지 설치 및 서비스를 시작, enable을 수행
+    - name: import the environment task file ans set the variables
+      import_tasks: environment.yml
+      vars:
+        package: httpd
+        service: httpd
+
+    # 방화벽 소프트웨어를 설치 및 구성
+    - name: import the firewall task file and set the variable.
+      import_tasks: firewall.yml
+      vars:
+        firewall_pkg: firewalld
+        firewall_svc: firewalld
+        rule: http
+
+    # 웹 페이지 파일을 생성
+    - name: import the placeholder task file and set the variable
+      import_tasks: placeholder.yml
+      vars:
+        file: /var/www/html/index.html
+
+# 모든 작업 수행 후, 제대로 작동하는지 테스트
+- name: import test play file and set the variable
+  import_playbook: test.yml
+  vars:
+    url: 'http://node03'

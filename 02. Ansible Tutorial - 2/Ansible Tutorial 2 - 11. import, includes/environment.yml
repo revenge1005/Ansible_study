@@ -1,0 +1,11 @@
+---
+  - name: install the {{ package }} packge.
+    yum:
+      name: "{{ package }}"
+      state: latest
+        
+  - name: start the {{ service }} service.
+    service:
+      name: "{{ service }}"
+      enabled: true
+      state: started

@@ -1,0 +1,11 @@
+[UBUNTU]
+node01 ansible_host=192.168.219.101
+node02 ansible_host=192.168.219.102
+
+[ROCKEY]
+node03 ansible_host=192.168.219.103 
+node04 ansible_host=192.168.219.104
+
+[All_LINUX:children]
+UBUNTU
+ROCKEY
