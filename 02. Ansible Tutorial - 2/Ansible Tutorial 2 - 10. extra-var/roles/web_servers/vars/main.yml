@@ -1,0 +1,3 @@
+# vars file for roles
+source_folder: ./MyWebSite
+destin_folder: /var/www/html

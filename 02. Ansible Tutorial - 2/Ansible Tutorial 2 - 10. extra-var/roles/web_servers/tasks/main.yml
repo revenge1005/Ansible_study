@@ -1,0 +1,54 @@
+---
+# tasks file for roles
+- name: Check and Print Linux Version
+  debug:
+    var: ansible_os_family
+
+- block:   # ======Block for RedHat======
+
+    - name: install Httpd package for Rocky Linux
+      dnf:
+        name: httpd
+        state: latest
+
+    - name: Start WEB Server service for Rocky Linux
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+  when: ansible_os_family == "RedHat"
+
+- block:   # ======Block for Debian======
+
+    - name: Install Apache WEB Server for Debian
+      apt:
+        name: apache2
+        state: latest
+
+    - name: Start WEB Server service for Debian
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+  when: ansible_os_family == "Debian"
+
+- name: Generate index.html file
+  template:
+    src: index.j2
+    dest: /var/www/html/index.html
+    mode: 0555
+  notify:
+    - Restart Apache RedHat
+    - Restart Apache Debian
+
+- name: Copy Homepage file to WEB Server
+  copy:
+    src: "{{ item }}"
+    dest: "{{ destin_folder }}"
+    mode: 0555
+  with_fileglob: "{{ source_folder }}/*"
+  notify:
+    - Restart Apache RedHat
+    - Restart Apache Debian
