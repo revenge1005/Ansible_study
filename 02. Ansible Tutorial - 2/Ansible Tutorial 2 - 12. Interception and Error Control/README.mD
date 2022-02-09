@@ -212,7 +212,6 @@
         "rc": 1, 
         "results": []
     }
-    ...ignoring
     fatal: [node04]: FAILED! => {
         "changed": false, 
         "failures": ["No package treeee available."], 
@@ -220,7 +219,6 @@
         "rc": 1, 
         "results": []
     }
-    ...ignoring
 
     NO MORE HOSTS LEFT ********************************************************************************
 
