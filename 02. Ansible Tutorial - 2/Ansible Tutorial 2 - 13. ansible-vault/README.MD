@@ -179,6 +179,21 @@ Pass0rd@1234 # <- 암호화할 값 입력, 입력이 끝나면 Ctrl + D
 Encryption successful
 
 
+echo -n "PAssw0rd@1234%###" | ansible-vault encrypt_string
+New Vault password:
+Confirm New Vault password:
+Reading plaintext input from stdin. (ctrl-d to end input, twice if your content does not already have a newline)
+
+!vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          65323563643931333437326165666164376165396330613630316261656332663132366534656263
+          3433663038333239356262616435313831333566616363620a333766663033626331323863313636
+          66386364393861343031323166663961373139653634313832666537646264643638343730363734
+          6238366562663235300a343430363937323438313465663763306238623733356264643636393738
+          39366537633863373836303364616333346632313535633063633433316261393939
+Encryption successful
+
+
 $ ansible-vault encrypt_string --stdin-name "Mypassword"
 New Vault password:
 Confirm New Vault password:
