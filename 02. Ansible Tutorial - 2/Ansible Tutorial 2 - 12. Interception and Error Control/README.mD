@@ -206,9 +206,21 @@
     ok: [node04]
 
     TASK [Task Number1] *******************************************************************************
-    fatal: [node03]: FAILED! => {"changed": false, "failures": ["No package treeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
+    fatal: [node03]: FAILED! => {
+        "changed": false, 
+        "failures": ["No package treeee available."], 
+        "msg": "Failed to install some of the specified packages", 
+        "rc": 1, 
+        "results": []
+    }
     ...ignoring
-    fatal: [node04]: FAILED! => {"changed": false, "failures": ["No package treeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
+    fatal: [node04]: FAILED! => {
+        "changed": false, 
+        "failures": ["No package treeee available."], 
+        "msg": "Failed to install some of the specified packages", 
+        "rc": 1, 
+        "results": []
+    }
     ...ignoring
 
     TASK [Task Number2] *******************************************************************************
