@@ -8,9 +8,9 @@
 
     |설명|명령|
     |----|-----------|
-    |암호화된 파일을 생성하기|ansible-vault create foo.yml|
-    |암호화된 파일을 수정하기|ansible-vault edite foo.yml|
-    |암호화된 파일의 패스워드 변경하기|ansible-vault rekey foo.yml|
-    |암호화되지 않은 파일을 암호화|ansible-vault encrypt foo.yml|
-    |암호화된 파일의 복호화|ansible-vault decrypt foo.yml|
-    |암호화된 파일의 내용 보기|ansible-vault view foo.yml|
+    |암호화된 파일을 생성하기|ansible-vault <span style="color:red">create</span> foo.yml|
+    |암호화된 파일을 수정하기|ansible-vault <span style="color:red">edite</span> foo.yml|
+    |암호화된 파일의 패스워드 변경하기|ansible-vault <span style="color:red">rekey</span> foo.yml|
+    |암호화되지 않은 파일을 암호화|ansible-vault <span style="color:red">encrypt</span> foo.yml|
+    |암호화된 파일의 복호화|ansible-vault <span style="color:red">decrypt</span> foo.yml|
+    |암호화된 파일의 내용 보기|ansible-vault <span style="color:red">view</span> foo.yml|
