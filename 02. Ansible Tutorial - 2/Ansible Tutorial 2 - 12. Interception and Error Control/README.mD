@@ -90,6 +90,8 @@
 
 - ### **【 failed_when 사용하지 않을 경우 】**
 
+    - 아래 task는 단순히 /tmp 디렉토리가 속한 디스크의 가용한 사이즈를 확인하는 것이다.
+
     - 아래 playbook을 실행하면 최종결과에 failed=0(성공)으로 표시된다.
 
     ```bash
@@ -109,4 +111,42 @@
     localhost                  : ok=1    changed=1    unreachable=0    failed=0
     ```
 
-- ### **【 failed_when 사용 경우 】**
+- ### **【 failed_when 조건 사용 】**
+
+    - disk 공간과 가용 메모리를 확인하여, 최소사양 보다 적은 task를 실패하도록 정의해 보자
+
+    - 아래 코드에서 STEP1은 1G 이상의 디스크 공간이 있어서 실패하지 않았고, STEP2는 정의한 공간보도 적어서 task가 실패하게 된다.
+
+    - 아래의 코드를 실행하면 "failed_when_result: true"라는 키/벨류가 생성되고 최종결과에 failed=1로 표시된다.
+
+    ```bash
+    vi test-failed_when.yml
+    - name: Test failed_when
+      hosts: localhost
+      gather_facts: no
+      tasks:
+    - name: (STEP1) Making sure the /tmp has more than 1gb
+      shell: "df -h /tmp|grep -v Filesystem|awk '{print $4}'|cut -d G -f1"
+      register: tmpspace
+      failed_when: "tmpspace.stdout|float < 1"
+
+    - name: (STEP2) Making sure the Physical Memory more than 2gb
+      shell: "cat /proc/meminfo|grep -i memtotal|awk '{print $2/1024/1024}'"
+      register: memory
+    failed_when: "memory.stdout|float < 2"
+
+    >ansible-playbook test-failed_when.yml
+    TASK [(STEP1) Making sure the /tmp has more than 1gb] *****************************************************************
+    changed: [localhost]
+
+    TASK [(STEP2) Making sure the Physical Memory more than 2gb] **********************************************************
+    fatal: [agent1]: FAILED! => {"changed": true, "cmd": "cat /proc/meminfo|grep -i memtotal|awk '{print $2/1024/1024}'", "delta": "0:00:00.007386", "end": "2018-11-07 23:56:39.958154", "failed": true, 
+                             "failed_when_result": true, "rc": 0, "start": "2018-11-07 23:56:39.950768", "stderr": "", "stderr_lines": [], "stdout": "7.14656", "stdout_lines": ["7.14656"]}
+	to retry, use: --limit @/Users/skiper/work/DevTools/github/cs-install-automation/test-failed_when.retry
+
+    PLAY RECAP ************************************************************************************************************
+    agent1                     : ok=1    changed=1    unreachable=0    failed=1
+    ```
+
+<br>
+
