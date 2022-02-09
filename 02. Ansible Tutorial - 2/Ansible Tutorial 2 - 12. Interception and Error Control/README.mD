@@ -146,20 +146,31 @@
     - 아래 playbook을 실행하면 최종결과에 failed=0(성공)으로 표시된다.
 
     ```bash
-    > vi test-failed_when.yml
+    $ cat test-failed_when.yml
+    ---
     - name: Test failed_when
-      hosts: localhost
+      hosts: ROCKEY
+      become: true
       gather_facts: no
       tasks:
-    - name: (STEP1) Making sure the /tmp has more than 1gb
-      shell: "df -h /tmp|grep -v Filesystem|awk '{print $4}'|cut -d G -f1"
 
-    > ansible-playbook test-failed_when.yml
-    TASK [(STEP1) Making sure the /tmp has more than 1gb] *****************************************************************
-    changed: [localhost]
+      - name: (STEP1) Making sure the /tmp has more then 1gb
+        shell: "df -h /tmp | grep -v Filesystem | awk '{print $4}' | cut -d G -f1"
 
-    PLAY RECAP ************************************************************************************************************
-    localhost                  : ok=1    changed=1    unreachable=0    failed=0
+    -----------------------------------------------------------------------------------
+    
+    $ ansible-playbook --ask-become-pass test-failed_when.yml
+    BECOME password:
+
+    PLAY [Test failed_when] ***************************************************************************
+
+    TASK [(STEP1) Making sure the /tmp has more then 1gb] *********************************************
+    changed: [node04]
+    changed: [node03]
+
+    PLAY RECAP ****************************************************************************************
+    node03                     : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+    node04                     : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
     ```
 
 - ### **【 failed_when 조건 사용 】**
@@ -171,44 +182,42 @@
     - 아래의 코드를 실행하면 "failed_when_result: true"라는 키/벨류가 생성되고 최종결과에 failed=1로 표시된다.
 
     ```bash
-    vi test-failed_when.yml
+    $ cat test-failed_when2.yml
+    ---
     - name: Test failed_when
-      hosts: localhost
+      hosts: ROCKEY
+      become: true
       gather_facts: no
       tasks:
-    - name: (STEP1) Making sure the /tmp has more than 1gb
-      shell: "df -h /tmp|grep -v Filesystem|awk '{print $4}'|cut -d G -f1"
-      register: tmpspace
-      failed_when: "tmpspace.stdout|float < 1"
 
-    - name: (STEP2) Making sure the Physical Memory more than 2gb
-      shell: "cat /proc/meminfo|grep -i memtotal|awk '{print $2/1024/1024}'"
-      register: memory
-      failed_when: "memory.stdout|float < 2"
+      - name: (STEP1) Making sure the /tmp has more then 1gb
+        shell: "df -h /tmp | grep -v Filesystem | awk '{print $4}' | cut -d G -f1"
+        register: tmpspace
+        failed_when: "tmpspace.stdout | float < 1"
 
-    >ansible-playbook test-failed_when.yml
-    TASK [(STEP1) Making sure the /tmp has more than 1gb] *****************************************************************
-    changed: [localhost]
+      - name: (STEP2) Making sure the Pyhsical Memory more then 2gb
+        shell: "cat /proc/meminfo | grep -i memtotal | awk '{print $2/1024/1024}'"
+        register: memory
+        failed_when: "memory.stdout | float < 2"
 
-    TASK [(STEP2) Making sure the Physical Memory more than 2gb] **********************************************************
-    fatal: [agent1]: FAILED! => {
-        "changed": true, 
-        "cmd": "cat /proc/meminfo|grep -i memtotal|awk '{print $2/1024/1024}'", 
-        "delta": "0:00:00.007386", 
-        "end": "2018-11-07 23:56:39.958154", 
-        "failed": true, 
-        "failed_when_result": true, 
-        "rc": 0, 
-        "start": "2018-11-07 23:56:39.950768", 
-        "stderr": "", 
-        "stderr_lines": [], 
-        "stdout": "7.14656", 
-        "stdout_lines": ["7.14656"]
-    }
-	to retry, use: --limit @/Users/skiper/work/DevTools/github/cs-install-automation/test-failed_when.retry
+    -----------------------------------------------------------------------------------
+    
+    $ ansible-playbook --ask-become-pass test-failed_when2.yml
+    BECOME password:
 
-    PLAY RECAP ************************************************************************************************************
-    agent1                     : ok=1    changed=1    unreachable=0    failed=1
+    PLAY [Test failed_when] ***************************************************************************
+
+    TASK [(STEP1) Making sure the /tmp has more then 1gb] *********************************************
+    changed: [node04]
+    changed: [node03]
+
+    TASK [(STEP2) Making sure the Pyhsical Memory more then 2gb] **************************************
+    changed: [node04]
+    fatal: [node03]: FAILED! => {"changed": true, "cmd": "cat /proc/meminfo | grep -i memtotal | awk '{print $2/1024/1024}'", "delta": "0:00:00.010646", "end": "2022-02-09 18:24:05.288521", "failed_when_result": true, "msg": "", "rc": 0, "start": "2022-02-09 18:24:05.277875", "stderr": "", "stderr_lines": [], "stdout": "0.763901", "stdout_lines": ["0.763901"]}
+
+    PLAY RECAP ****************************************************************************************
+    node03                     : ok=1    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+    node04                     : ok=2    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
     ```
 
 <br>
