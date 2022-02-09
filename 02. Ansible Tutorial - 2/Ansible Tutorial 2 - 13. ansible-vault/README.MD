@@ -7,7 +7,7 @@
 - << ansible-vault >>
 
     |설명|명령|
-    |:----:|-----------|
+    |----|-----------|
     |암호화된 파일을 생성하기|ansible-vault create foo.yml|
     |암호화된 파일을 수정하기|ansible-vault edite foo.yml|
     |암호화된 파일의 패스워드 변경하기|ansible-vault rekey foo.yml|
