@@ -49,7 +49,7 @@
     agent1                     : ok=2    changed=1    unreachable=0    failed=0
     ```
 
-- << changed_when 사용할 경우 >>
+- ### **【 changed_when 사용할 경우 】**
 
     - **이미 http server가 구동중이라면 "start apache http server" task를 실행하지 않은것이므로, change 상태가 변경되지 않았다고 정의한다. (changed가 없고 ok만 표시됨)**
 
@@ -78,241 +78,35 @@
     agent1                     : ok=2    changed=0    unreachable=0    failed=0
     ```
 
-### 1) ignore_errors
+<br>
 
-```bash
-$ cat playbook_errorhandling.yml
----
-- name: Ansible Tutorial 12
-  hosts: ROCKEY
-  become: yes
+## 3) failed_when
 
-  tasks:
-  # 에러 발생
-  - name: Task Number1
-    yum:
-      name: treeeeee
-      state: latest
+- **실패를 명확하게 구분할 수 있는 조건을 명시하여, 어떤 상황을 실패로 판단할지 정의한다.**
 
-  - name: Task Number2
-    shell: echo HellWorld!
+- 일반적으로 ansible에서 shell/command를 실행하면 정상인 경우 0을 반환하고, 나머지는 에러코드로 판단하여 실패로 간주한다.
 
-  - name: Task Number3
-    shell: echo Privet Mir!!!
+- 하지만 실제 업무에서 활용할때는 0이 아닌 다른 코드도 정상으로 인식해야할 경우가 많은데, 이때 failed_when을 이용하여 실패의 조건을 명시하여 사용할 수 있다.
 
-$ ansible-playbook --ask-become-pass playbook_errorhandling.yml
-BECOME password:
+- ### **【 failed_when 사용하지 않을 경우 】**
 
-PLAY [Ansible Tutorial 12] ************************************************************************
+    - 아래 playbook을 실행하면 최종결과에 failed=0(성공)으로 표시된다.
 
-TASK [Gathering Facts] ****************************************************************************
-ok: [node04]
-ok: [node03]
+    ```bash
+    > vi test-failed_when.yml
+    - name: Test failed_when
+      hosts: localhost
+      gather_facts: no
+      tasks:
+    - name: (STEP1) Making sure the /tmp has more than 1gb
+      shell: "df -h /tmp|grep -v Filesystem|awk '{print $4}'|cut -d G -f1"
 
-# 에러 발생
-TASK [Task Number1] *******************************************************************************
-fatal: [node03]: FAILED! => {"changed": false, "failures": ["No package treeeeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
-fatal: [node04]: FAILED! => {"changed": false, "failures": ["No package treeeeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
+    > ansible-playbook test-failed_when.yml
+    TASK [(STEP1) Making sure the /tmp has more than 1gb] *****************************************************************
+    changed: [localhost]
 
-# 에러 발생으로 나머지 task를 실행하지 않고 play를 중단
-PLAY RECAP ****************************************************************************************
-node03                     : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
-node04                     : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
-```
+    PLAY RECAP ************************************************************************************************************
+    localhost                  : ok=1    changed=1    unreachable=0    failed=0
+    ```
 
-```bash
-$ cat playbook_errorhandling.yml
----
-- name: Ansible Tutorial 12
-  hosts: ROCKEY
-  become: yes
-
-  tasks:
-  # "ignore_errors: yes" 추가
-  - name: Task Number1
-    yum:
-      name: treeeeee
-      state: latest
-    ignore_errors: yes
-
-  - name: Task Number2
-    shell: echo HellWorld!
-
-  - name: Task Number3
-    shell: echo Privet Mir!!!
-
-
-$ ansible-playbook --ask-become-pass playbook_errorhandling.yml
-BECOME password:
-
-PLAY [Ansible Tutorial 12] ************************************************************************
-
-TASK [Gathering Facts] ****************************************************************************
-ok: [node03]
-ok: [node04]
-
-TASK [Task Number1] *******************************************************************************
-fatal: [node03]: FAILED! => {"changed": false, "failures": ["No package treeeeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
-...ignoring
-fatal: [node04]: FAILED! => {"changed": false, "failures": ["No package treeeeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
-...ignoring
-
-TASK [Task Number2] *******************************************************************************
-changed: [node03]
-changed: [node04]
-
-TASK [Task Number3] *******************************************************************************
-changed: [node04]
-changed: [node03]
-
-PLAY RECAP ****************************************************************************************
-node03                     : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
-node04                     : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
-```
-
----
-
-### 2) failed_when 
-
-```bash
-$ cat playbook_errorhandling.yml
----
-- name: Ansible Tutorial 12
-  hosts: ROCKEY
-  become: yes
-
-  tasks:
-  - name: Task Number1
-    yum:
-      name: treeeeee
-      state: latest
-    ignore_errors: yes
-
-  - name: Task Number2
-    shell: echo HellWorld!
-    register: results
-
-  - debug:
-      var: results
-
-  - name: Task Number3
-    shell: echo Privet Mir!!! 
-
-$ ansible-playbook --ask-become-pass playbook_errorhandling.yml
-BECOME password:
-
-PLAY [Ansible Tutorial 12] ************************************************************************
-
-TASK [Gathering Facts] ****************************************************************************
-ok: [node03]
-ok: [node04]
-
-TASK [Task Number1] *******************************************************************************
-fatal: [node03]: FAILED! => {"changed": false, "failures": ["No package treeeeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
-...ignoring
-fatal: [node04]: FAILED! => {"changed": false, "failures": ["No package treeeeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
-...ignoring
-
-TASK [Task Number2] *******************************************************************************
-changed: [node04]
-changed: [node03]
-
-TASK [debug] **************************************************************************************
-ok: [node03] => {
-    "results": {
-        "changed": true,
-        "cmd": "echo Hellorld!",
-        "delta": "0:00:00.004675",
-        "end": "2022-02-09 13:39:51.460972",
-        "failed": false,
-        "msg": "",
-        "rc": 0,
-        "start": "2022-02-09 13:39:51.456297",
-        "stderr": "",
-        "stderr_lines": [],
-        "stdout": "HellWorld!",
-        "stdout_lines": [
-            "HellWorld!"
-        ]
-    }
-}
-ok: [node04] => {
-    "results": {
-        "changed": true,
-        "cmd": "echo Hellorld!",
-        "delta": "0:00:00.004548",
-        "end": "2022-02-09 13:39:50.617684",
-        "failed": false,
-        "msg": "",
-        "rc": 0,
-        "start": "2022-02-09 13:39:50.613136",
-        "stderr": "",
-        "stderr_lines": [],
-        "stdout": "HellWorld!",
-        "stdout_lines": [
-            "HellWorld!"
-        ]
-    }
-}
-
-TASK [Task Number3] *******************************************************************************
-changed: [node04]
-changed: [node03]
-
-PLAY RECAP ****************************************************************************************
-node03                     : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
-node04                     : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
-
-
-$ cat playbook_errorhandling.yml 
----
-- name: Ansible Tutorial 12
-  hosts: ROCKEY
-  become: yes
-
-  tasks:
-  - name: Task Number1
-    yum:
-      name: treeeeee
-      state: latest
-    ignore_errors: yes
-
-  - name: Task Number2
-    shell: echo HellWorld!
-    register: results
-    failed_when: "'World' in results.stdout"
-#   failed_when: results.rc == 0   
-
-  - debug:
-      var: results
-
-  - name: Task Number3
-    shell: echo Privet Mir!!!
-
-
-$ ansible-playbook --ask-become-pass playbook_errorhandling.yml
-BECOME password:
-
-PLAY [Ansible Tutorial 12] ************************************************************************
-
-TASK [Gathering Facts] ****************************************************************************
-ok: [node03]
-ok: [node04]
-
-TASK [Task Number1] *******************************************************************************
-fatal: [node03]: FAILED! => {"changed": false, "failures": ["No package treeeeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
-...ignoring
-fatal: [node04]: FAILED! => {"changed": false, "failures": ["No package treeeeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
-...ignoring
-
-TASK [Task Number2] *******************************************************************************
-fatal: [node04]: FAILED! => {"changed": true, "cmd": "echo HellWorld!", "delta": "0:00:00.004375", "end": "2022-02-09 13:54:52.459316", "failed_when_result": true, "msg": "",
-"rc": 0, "start": "2022-02-09 13:54:52.454941", "stderr": "", "stderr_lines": [], "stdout": "HellWorld!", "stdout_lines": ["HellWorld!"]}
-fatal: [node03]: FAILED! => {"changed": true, "cmd": "echo HellWorld!", "delta": "0:00:00.004967", "end": "2022-02-09 13:54:53.283126", "failed_when_result": true, "msg": "", 
-rc": 0, "start": "2022-02-09 13:54:53.278159", "stderr": "", "stderr_lines": [], "stdout": "HellWorld!", "stdout_lines": ["HellWorld!"]}
-
-PLAY RECAP ****************************************************************************************
-node03                     : ok=2    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=1
-node04                     : ok=2    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=1
-```
-
+- ### **【 failed_when 사용 경우 】**
