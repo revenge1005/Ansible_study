@@ -1,0 +1,19 @@
+---
+- name: Ansible Tutorial 12
+  hosts: ROCKEY
+  any_errors_fatal: true
+  become: yes
+
+  tasks:
+  # 에러 발생
+  - name: Task Number1
+    yum:
+      name: treeee
+      state: latest
+    ignore_errors: true
+
+  - name: Task Number2
+    shell: echo HellWorld!
+
+  - name: Task Number3
+    shell: echo Privet Mir!!!

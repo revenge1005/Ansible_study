@@ -1,0 +1,19 @@
+---
+- name: TEST changed_when
+  hosts: ROCKEY
+  become: true
+  gather_facts: no
+
+  tasks:
+  - name: "Apache install"
+    yum:
+      name: httpd
+      state: latest
+
+  - name: "Start the Apache HTTPD Server"
+    register: start_httpd_out
+    shell: "httpd -k start"
+    changed_when: " 'already running' not in start_httpd_out.stdout "
+
+  - debug:
+      msg: "{{ start_httpd_out.stdout }}"

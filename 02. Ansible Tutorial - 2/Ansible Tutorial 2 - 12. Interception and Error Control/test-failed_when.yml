@@ -1,0 +1,9 @@
+---
+- name: Test failed_when
+  hosts: ROCKEY
+  become: true
+  gather_facts: no
+  tasks:
+
+  - name: (STEP1) Making sure the /tmp has more then 1gb
+    shell: "df -h /tmp | grep -v Filesystem | awk '{print $4}' | cut -d G -f1"
