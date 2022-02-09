@@ -1,12 +1,12 @@
-## 12. Interception and Error Control
+# 12. Interception and Error Control
 
-### 1) "failed_when"과 "changed_when"
+## 1) "failed_when"과 "changed_when"
 
 - **changed_when/failed_when은 정의한 조건에 만족/불만족 했을 경우에 task가 failed 또는 success(changed)로 표시**된다, 이 구문의 가장 큰 목적은 task가 실제로 성공 또는 실패했는지를 결정하는 것이다.
 
 <br>
 
-### 2) changed_when
+## 2) changed_when
 
 - **changed 상태값은 해딩 task가 어떤것을 변경했는지 여부를 표시한다.**
 
@@ -14,7 +14,7 @@
 
 - 별도로 설정하지 않는 한 이 명령어 모듈의 결과는 항상 failed/changed 또는 skipped를 리턴한다.
 
-- ### **<< changed_when 사용하지 않을 경우 >>**
+- ### **【 changed_when 사용하지 않을 경우 】**
 
     - **정의한 task가 실제로 실행되었는지를 확인하는 것이 필요할 경우가 있다.**
 
