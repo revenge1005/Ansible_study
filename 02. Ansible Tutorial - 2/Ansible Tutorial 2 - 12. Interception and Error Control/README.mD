@@ -14,7 +14,7 @@
 
 - 별도로 설정하지 않는 한 이 명령어 모듈의 결과는 항상 failed/changed 또는 skipped를 리턴한다.
 
-- <span style="color:yellow"><< changed_when 사용하지 않을 경우 >></span>
+#### - << changed_when 사용하지 않을 경우 >> 
 
     - **정의한 task가 실제로 실행되었는지를 확인하는 것이 필요할 경우가 있다.**
 
