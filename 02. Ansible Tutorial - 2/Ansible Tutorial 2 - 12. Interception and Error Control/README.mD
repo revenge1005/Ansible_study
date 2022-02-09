@@ -21,18 +21,18 @@
     ```bash
     $ ansible-playbook --ask-become-pass playbook_errorhandling.yml
 
-    TASK [Start the Apache HTTPD Server] ****************************************************************************
+    TASK [Start the Apache HTTPD Server] ****************************************************
     changed: [agent1]
 
     # 에러 발생
-    TASK [debug] *******************************************************************************
+    TASK [debug] ****************************************************
     ok: [agent1] => {
         "changed": false,
         "msg": "httpd (pid 2734) already running"
     }
 
     # 에러 발생으로 나머지 task를 실행하지 않고 play를 중단
-    PLAY RECAP ****************************************************************************************
+    PLAY RECAP ****************************************************
     agent1                     : ok=2    changed=1    unreachable=0    failed=0
     ```
 
