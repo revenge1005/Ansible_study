@@ -222,13 +222,7 @@
     }
     ...ignoring
 
-    TASK [Task Number2] *******************************************************************************
-    changed: [node03]
-    changed: [node04]
-
-    TASK [Task Number3] *******************************************************************************
-    changed: [node04]
-    changed: [node03]
+    NO MORE HOSTS LEFT ********************************************************************************
 
     PLAY RECAP ****************************************************************************************
     node03                     : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
@@ -271,9 +265,21 @@
     ok: [node04]
 
     TASK [Task Number1] *******************************************************************************
-    fatal: [node03]: FAILED! => {"changed": false, "failures": ["No package treeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
+    fatal: [node03]: FAILED! => {
+        "changed": false, 
+        "failures": ["No package treeee available."], 
+        "msg": "Failed to install some of the specified packages", 
+        "rc": 1, 
+        "results": []
+    }
     ...ignoring
-    fatal: [node04]: FAILED! => {"changed": false, "failures": ["No package treeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
+    fatal: [node04]: FAILED! => {
+        "changed": false, 
+        "failures": ["No package treeee available."], 
+        "msg": "Failed to install some of the specified packages", 
+        "rc": 1, 
+        "results": []
+    }
     ...ignoring
 
     TASK [Task Number2] *******************************************************************************
