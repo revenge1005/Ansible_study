@@ -133,15 +133,27 @@
     - name: (STEP2) Making sure the Physical Memory more than 2gb
       shell: "cat /proc/meminfo|grep -i memtotal|awk '{print $2/1024/1024}'"
       register: memory
-    failed_when: "memory.stdout|float < 2"
+      failed_when: "memory.stdout|float < 2"
 
     >ansible-playbook test-failed_when.yml
     TASK [(STEP1) Making sure the /tmp has more than 1gb] *****************************************************************
     changed: [localhost]
 
     TASK [(STEP2) Making sure the Physical Memory more than 2gb] **********************************************************
-    fatal: [agent1]: FAILED! => {"changed": true, "cmd": "cat /proc/meminfo|grep -i memtotal|awk '{print $2/1024/1024}'", "delta": "0:00:00.007386", "end": "2018-11-07 23:56:39.958154", "failed": true, 
-                             "failed_when_result": true, "rc": 0, "start": "2018-11-07 23:56:39.950768", "stderr": "", "stderr_lines": [], "stdout": "7.14656", "stdout_lines": ["7.14656"]}
+    fatal: [agent1]: FAILED! => {
+        "changed": true, 
+        "cmd": "cat /proc/meminfo|grep -i memtotal|awk '{print $2/1024/1024}'", 
+        "delta": "0:00:00.007386", 
+        "end": "2018-11-07 23:56:39.958154", 
+        "failed": true, 
+        "failed_when_result": true, 
+        "rc": 0, 
+        "start": "2018-11-07 23:56:39.950768", 
+        "stderr": "", 
+        "stderr_lines": [], 
+        "stdout": "7.14656", 
+        "stdout_lines": ["7.14656"]
+    }
 	to retry, use: --limit @/Users/skiper/work/DevTools/github/cs-install-automation/test-failed_when.retry
 
     PLAY RECAP ************************************************************************************************************
@@ -150,3 +162,116 @@
 
 <br>
 
+## 4) ignore_error
+
+- **ansibledms task를 실행하다 오류가 발생하면, 나머지 task를 실행하지 않고 중지한다.**
+
+- **ignore_error를 이용하면 오류를 무시하고 다음 단계를 진행할 수 있다.**
+
+- ### **【 ignore_errors: false (default) 】**
+
+    - "Task Number1"에서 오류가 발생하면서 "Task Number2"로 진행도지 않고 task를 중지할 것이다.
+
+    ```bash
+    $ cat playbook_errorhandling.yml
+    ---
+    - name: Ansible Tutorial 12
+      hosts: ROCKEY
+      any_errors_fatal: true
+      become: yes
+
+      tasks:
+      - name: Task Number1
+        yum:
+          name: treeee
+          state: latest
+        ignore_errors: false
+
+      - name: Task Number2
+        shell: echo HellWorld!
+
+     - name: Task Number3
+       shell: echo Privet Mir!!!
+
+
+    $ ansible-playbook --ask-become-pass playbook_errorhandling.yml
+    BECOME password:
+
+    PLAY [Ansible Tutorial 12] ************************************************************************
+
+    TASK [Gathering Facts] ****************************************************************************
+    ok: [node03]
+    ok: [node04]
+
+    TASK [Task Number1] *******************************************************************************
+    fatal: [node03]: FAILED! => {"changed": false, "failures": ["No package treeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
+    ...ignoring
+    fatal: [node04]: FAILED! => {"changed": false, "failures": ["No package treeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
+    ...ignoring
+
+    TASK [Task Number2] *******************************************************************************
+    changed: [node03]
+    changed: [node04]
+
+    TASK [Task Number3] *******************************************************************************
+    changed: [node04]
+    changed: [node03]
+
+    PLAY RECAP ****************************************************************************************
+    node03                     : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
+    node04                     : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
+    ```
+
+- ### **【 ignore_errors: true 】**
+
+    - "Task Number1"에서 오류가 발생하다러도 "...ignoring"으로 표시되면서, "Task Number2"를 실행하는 것을 볼 수 있다.
+
+    ```bash
+    cat playbook_errorhandling.yml
+    ---
+    - name: Ansible Tutorial 12
+      hosts: ROCKEY
+      any_errors_fatal: true
+      become: yes
+
+      tasks:
+      - name: Task Number1
+        yum:
+          name: treeee
+          state: latest
+        ignore_errors: true
+
+      - name: Task Number2
+        shell: echo HellWorld!
+
+      - name: Task Number3
+        shell: echo Privet Mir!!!
+
+    
+    $ ansible-playbook --ask-become-pass playbook_errorhandling.yml
+    BECOME password:
+
+    PLAY [Ansible Tutorial 12] ************************************************************************
+
+    TASK [Gathering Facts] ****************************************************************************
+    ok: [node03]
+    ok: [node04]
+
+    TASK [Task Number1] *******************************************************************************
+    fatal: [node03]: FAILED! => {"changed": false, "failures": ["No package treeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
+    ...ignoring
+    fatal: [node04]: FAILED! => {"changed": false, "failures": ["No package treeee available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
+    ...ignoring
+
+    TASK [Task Number2] *******************************************************************************
+    changed: [node03]
+    changed: [node04]
+
+    TASK [Task Number3] *******************************************************************************
+    changed: [node03]
+    changed: [node04]
+
+    PLAY RECAP ****************************************************************************************
+    node03                     : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
+    node04                     : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
+    ```
