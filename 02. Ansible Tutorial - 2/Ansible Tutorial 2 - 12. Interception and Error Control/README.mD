@@ -60,7 +60,6 @@
     ```bash
     - name: "Start the Apache HTTPD Server"
       become: true
-      become_user: root
       register: starthttpdout
       shell: "httpd -k start"
       changed_when: " 'already running' not in starthttpdout.stdout "
