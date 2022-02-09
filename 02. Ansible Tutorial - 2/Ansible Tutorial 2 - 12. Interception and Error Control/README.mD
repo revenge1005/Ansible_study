@@ -1,5 +1,7 @@
 # 12. Interception and Error Control
 
+<br>
+
 ## 1) "failed_when"과 "changed_when"
 
 - **changed_when/failed_when은 정의한 조건에 만족/불만족 했을 경우에 task가 failed 또는 success(changed)로 표시**된다, 이 구문의 가장 큰 목적은 task가 실제로 성공 또는 실패했는지를 결정하는 것이다.
