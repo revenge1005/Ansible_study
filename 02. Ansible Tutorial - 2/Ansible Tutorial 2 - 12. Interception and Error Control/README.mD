@@ -23,32 +23,53 @@
     - 예를 들어 apache http server를 실행하려 했는데, 이미 실행중이라면 실제로 실행하지 못했다고 판다해야 하며, 이러한 실행 여부를 확인하는 값이 changed라는 파라미터이고 각 task가 실행되면 노란색으로 표시된다.
 
     ```bash
-    $ vi test-changed_when.yml
+    $ cat test-changed_when.yml
+    ---
     - name: TEST changed_when
-      hosts: "Agents"
+      hosts: ROCKEY
+      become: true
       gather_facts: no
+
       tasks:
+      - name: "Apache install"
+        yum:    
+          name: httpd
+          state: latest
+
       - name: "Start the Apache HTTPD Server"
-        become: true
-        become_user: root
-        register: starthttpdout
+        register: start_httpd_out
         shell: "httpd -k start"
-      - debug:
-          msg: "{{starthttpdout.stdout}}"
+
+      - debug:  
+          msg: "{{ start_httpd_out.stdout }}"
+
 
     -----------------------------------------------------------------------------------
 
-    TASK [Start the Apache HTTPD Server] **********************************************************************************
-    changed: [agent1]
+    $ ansible-playbook --ask-become-pass test-changed_when.yml
+    BECOME password:
 
-    TASK [debug] **********************************************************************************************************
-    ok: [agent1] => {
-        "changed": false,
-        "msg": "httpd (pid 2734) already running"
+    PLAY [TEST changed_when] **************************************************************************
+
+    TASK [Apache install] *****************************************************************************
+    ok: [node03]
+    changed: [node04]
+
+    TASK [Start the Apache HTTPD Server]    **************************************************************
+    changed: [node03]   
+    changed: [node04]
+
+    TASK [debug] ************************************************************************************** 
+    ok: [node03] => {
+        "msg": "httpd (pid 11717) already running"
+    }
+    ok: [node04] => {
+        "msg": "httpd (pid 2973) already running"
     }
 
-    PLAY RECAP ************************************************************************************************************
-    agent1                     : ok=2    changed=1    unreachable=0    failed=0
+    PLAY RECAP ****************************************************************************************
+    node03                     : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+    node04                     : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
     ```
 
 - ### **【 changed_when 사용할 경우 】**
@@ -58,25 +79,54 @@
     - 이를 changed_when에서 "httpd -k start"를 실행했을 때 출력된 결과를 이용하여 상태를 정의한다.
 
     ```bash
-    - name: "Start the Apache HTTPD Server"
+    $ cat test-changed_when2.yml
+    ---
+    - name: TEST changed_when
+      hosts: ROCKEY
       become: true
-      register: starthttpdout
-      shell: "httpd -k start"
-      changed_when: " 'already running' not in starthttpdout.stdout "
+      gather_facts: no
+
+      tasks:
+      - name: "Apache install"
+        yum:
+          name: httpd
+          state: latest
+
+      - name: "Start the Apache HTTPD Server"
+        register: start_httpd_out
+        shell: "httpd -k start"
+        changed_when: " 'already running' not in start_httpd_out.stdout "
+
+      - debug:
+          msg: "{{ start_httpd_out.stdout }}"
+
     
     -----------------------------------------------------------------------------------
     
-    TASK [Start the Apache HTTPD Server] **********************************************************************************
-    ok: [agent1]
+    $ ansible-playbook --ask-become-pass test-changed_when2.yml
+    BECOME password:
 
-    TASK [debug] **********************************************************************************************************
-    ok: [agent1] => {
-        "changed": false,
-        "msg": "httpd (pid 2734) already running"
+    PLAY [TEST changed_when] **************************************************************************
+
+    TASK [Apache install] *****************************************************************************
+    ok: [node03]
+    ok: [node04]
+
+    TASK [Start the Apache HTTPD Server] **************************************************************
+    ok: [node04]
+    ok: [node03]
+
+    TASK [debug] **************************************************************************************
+    ok: [node03] => {
+        "msg": "httpd (pid 11717) already running"
+    }
+    ok: [node04] => {
+        "msg": "httpd (pid 2973) already running"
     }
 
-    PLAY RECAP ************************************************************************************************************
-    agent1                     : ok=2    changed=0    unreachable=0    failed=0
+    PLAY RECAP ****************************************************************************************
+    node03                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+    node04                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
     ```
 
 <br>
